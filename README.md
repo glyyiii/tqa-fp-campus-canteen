@@ -3,10 +3,10 @@
 ## Team Members
 | Role | Name | GitHub |
 |------|------|--------|
-| Test Lead | Glyzelle Lares | @glyyiii |
-| Developer | [Member 2 Name] | [@username] |
-| Manual & Non-Functional Tester | [Member 3 Name] | [@username] |
-| Automation Tester | [Member 4 Name] | [@username] |
+| Test Lead | Glyzelle Laresma | @glyyiii |
+| Developer | Gelrick Mamites | [@username] |
+| Manual & Non-Functional Tester | Mary Faith Lirasan | [@username] |
+| Automation Tester | Zyra Marie Glipa | [@username] |
 
 ## Stack
 - **Backend:** Python (FastAPI, SQLite)
