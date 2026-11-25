@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Report | Fookeyqou Campus Canteen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { brand: { light: '#F9F6F0', DEFAULT: '#D97706', dark: '#B45309' }, dark: '#1C1917' }, fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Inter"', 'sans-serif'], } } } }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>body { font-family: 'Inter', sans-serif; background-color: #F9F6F0; }</style>
+</head>
+<body class="text-gray-800 flex flex-col min-h-screen">
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center sticky top-0 z-40">
+                <div class="flex items-center gap-2">
+            <img src="img/logo.png" alt="Fookeyqou Logo" class="h-12 w-auto object-contain">
+            <span class="font-serif font-bold text-2xl tracking-tight text-dark">Fookeyqou</span>
+        </div>
+        <div class="hidden md:flex gap-8 font-medium text-sm text-gray-500">
+            <a href="index.html" class="hover:text-gray-900 transition">Menu</a>
+            <a href="orders.html" class="hover:text-gray-900 transition">My Orders</a>
+            <a href="reports.html" class="text-brand font-semibold border-b-2 border-brand pb-1">Reports</a>
+        </div>
+        <div class="flex items-center gap-4"><button onclick="logout()" class="bg-gray-100 text-gray-600 px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-200 transition">Sign Out</button></div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto w-full px-8 py-12 flex-1">
+        <h1 class="font-serif text-4xl font-bold text-dark mb-8">Sales Report</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-orange-100 text-brand flex items-center justify-center text-2xl"><i class="fa-solid fa-receipt"></i></div>
+                <div><p class="text-gray-500 font-medium">Total Orders</p><h3 id="total-orders" class="text-4xl font-bold text-dark">0</h3></div>
+            </div>
+            <div class="bg-white p-8 rounded-2xl border border-gray-200 shadow-sm flex items-center gap-6">
+                <div class="w-16 h-16 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-2xl"><i class="fa-solid fa-peso-sign"></i></div>
+                <div><p class="text-gray-500 font-medium">Total Revenue</p><h3 id="total-revenue" class="text-4xl font-bold text-dark">₱0.00</h3></div>
+            </div>
+        </div>
+        <div class="bg-white p-12 rounded-2xl border border-gray-200 shadow-sm text-center">
+            <i class="fa-solid fa-chart-line text-6xl mb-4 text-gray-200"></i>
+            <p class="font-medium text-gray-400 text-lg">Detailed charts will appear here.</p>
+        </div>
+    </main>
+
+    <script>
+        fetch('http://localhost:8000/api/reports/sales')
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('total-orders').textContent = data.total_orders;
+                document.getElementById('total-revenue').textContent = `₱${data.total_revenue.toFixed(2)}`;
+            });
+        function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+    </script>
+</body>
+</html>

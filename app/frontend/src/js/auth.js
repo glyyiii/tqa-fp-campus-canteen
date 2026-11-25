@@ -9,7 +9,6 @@ if (loginForm) {
         const role = document.getElementById('role').value;
 
         try {
-            // changed 127.0.0.1 to localhost
             const response = await fetch('http://localhost:8000/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -21,8 +20,15 @@ if (loginForm) {
                 localStorage.setItem('user_id', data.user_id);
                 localStorage.setItem('role', data.role);
                 localStorage.setItem('username', username);
-                window.location.href = 'index.html';
+                
+                // Redirect based on role
+                if (data.role === 'staff') {
+                    window.location.href = 'staff.html';
+                } else {
+                    window.location.href = 'index.html';
+                }
             } else {
+                // Show the red error message if login fails
                 errorMsg.classList.remove('hidden');
             }
         } catch (error) {

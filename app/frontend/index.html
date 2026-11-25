@@ -3,25 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Canteen - Menu</title>
-    <link rel="stylesheet" href="src/css/output.css">
+    <title>Fookeyqou Campus Canteen | Pre-Order</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { light: '#F9F6F0', DEFAULT: '#D97706', dark: '#B45309' },
+                        dark: '#1C1917'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>body { font-family: 'Inter', sans-serif; background-color: #F9F6F0; }</style>
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans">
-    <nav class="bg-blue-600 p-4 text-white flex justify-between items-center shadow-md">
-        <h1 class="text-xl font-bold">Campus Canteen</h1>
-        <div>
-            <span id="user-display" class="mr-4">Student</span>
-            <button onclick="logout()" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded text-sm font-semibold">Logout</button>
+<body class="text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center sticky top-0 z-40">
+                <div class="flex items-center gap-2">
+            <img src="img/logo.png" alt="Fookeyqou Logo" class="h-12 w-auto object-contain">
+            <span class="font-serif font-bold text-2xl tracking-tight text-dark">Fookeyqou</span>
+        </div>
+        
+        <div class="hidden md:flex gap-8 font-medium text-sm text-gray-500">
+            <a href="index.html" class="text-brand font-semibold border-b-2 border-brand pb-1">Menu</a>
+            <a href="orders.html" class="hover:text-gray-900 transition">My Orders</a>
+            <a href="reports.html" class="hover:text-gray-900 transition">Reports</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <div class="relative hidden md:block">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <input type="text" id="search-input" placeholder="Search dishes..." class="bg-gray-50 border border-gray-200 text-sm rounded-full pl-10 pr-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-brand/50">
+            </div>
+            <button onclick="toggleCart()" class="relative bg-brand text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-brand-dark transition shadow-sm">
+                <i class="fa-solid fa-bag-shopping mr-2"></i>Cart
+                <span id="cart-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full hidden">0</span>
+            </button>
         </div>
     </nav>
 
-    <main class="max-w-4xl mx-auto p-6 mt-6">
-        <h2 class="text-2xl font-bold mb-4">Pre-Order Menu</h2>
-        <div id="menu-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Menu items will be injected here by JS -->
+    <!-- Hero Section -->
+    <header class="bg-brand-light py-12 px-8 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto">
+            <p class="text-brand font-semibold tracking-wider text-sm mb-2 uppercase">Skip the Line</p>
+            <h1 class="font-serif text-4xl md:text-5xl font-bold text-dark mb-4">What are you craving today?</h1>
+            <p class="text-gray-500 max-w-xl text-lg">Freshly prepared meals for students. Pre-order now and pick it up without waiting.</p>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-7xl mx-auto w-full px-8 py-10 flex flex-col md:flex-row gap-8 flex-1">
+        
+        <!-- Left Sidebar: Filters -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm sticky top-28">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="font-bold text-dark">Filters</h3>
+                    <button onclick="resetFilters()" class="text-xs text-gray-400 hover:text-brand font-medium">Clear all</button>
+                </div>
+                
+                <div class="mb-8">
+                    <h4 class="font-semibold text-sm mb-3 text-gray-800">Category</h4>
+                    <div class="space-y-3 text-sm text-gray-500 font-medium">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" class="category-filter w-4 h-4 accent-brand rounded" value="Meals" checked> Meals
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" class="category-filter w-4 h-4 accent-brand rounded" value="Drinks" checked> Drinks
+                        </label>
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" class="category-filter w-4 h-4 accent-brand rounded" value="Snacks" checked> Snacks
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-sm mb-3 text-gray-800">Price Range</h4>
+                    <input type="range" id="price-range" min="0" max="100" value="100" class="w-full accent-brand h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                    <div class="flex justify-between text-xs text-gray-400 mt-2 font-medium">
+                        <span>₱0</span>
+                        <span id="price-label">₱100+</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Side: Menu Grid -->
+        <div class="flex-1">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-serif text-3xl font-bold text-dark">Menu Items</h2>
+                <select id="sort-select" class="bg-white border border-gray-200 text-sm font-medium rounded-xl px-4 py-2.5 focus:outline-none text-gray-600 shadow-sm cursor-pointer">
+                    <option value="popular">Sort by: Popular</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                </select>
+            </div>
+
+            <div id="menu-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Items injected via JS -->
+            </div>
         </div>
     </main>
 
+    <!-- Sliding Cart Panel & Toast Container (Same as before) -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/40 z-40 hidden transition-opacity backdrop-blur-sm" onclick="toggleCart()"></div>
+    <div id="cart-panel" class="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+            <h3 class="font-serif text-2xl font-bold text-dark">Your Pre-Order</h3>
+            <button onclick="toggleCart()" class="text-gray-400 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 p-2 rounded-full transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+        </div>
+        <div id="cart-items" class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50/50"></div>
+        <div class="p-6 border-t border-gray-100 bg-white">
+            <div class="flex justify-between items-center mb-5 text-lg">
+                <span class="text-gray-500 font-medium">Total</span>
+                <span id="cart-total" class="font-bold text-3xl text-dark">₱0.00</span>
+            </div>
+            <button onclick="checkout()" class="w-full bg-brand text-white py-4 rounded-xl font-bold hover:bg-brand-dark transition shadow-lg shadow-brand/30 flex justify-center items-center gap-2 text-lg">Confirm Pre-Order <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2"></div>
     <script src="src/js/menu.js"></script>
 </body>
 </html>

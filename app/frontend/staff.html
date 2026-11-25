@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Staff Dashboard | Fookeyqou</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { brand: { light: '#F9F6F0', DEFAULT: '#D97706', dark: '#B45309' }, dark: '#1C1917' }, fontFamily: { serif: ['"Playfair Display"', 'serif'], sans: ['"Inter"', 'sans-serif'], } } } }</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>body { font-family: 'Inter', sans-serif; background-color: #F9F6F0; }</style>
+</head>
+<body class="text-gray-800 flex flex-col min-h-screen">
+    <nav class="bg-white border-b border-gray-100 px-8 py-4 flex justify-between items-center sticky top-0 z-40">
+        <div class="flex items-center gap-2">
+            <img src="img/logo.png" alt="Fookeyqou Logo" class="h-12 w-auto object-contain">
+            <span class="font-serif font-bold text-2xl tracking-tight text-dark">Fookeyqou <span class="text-brand text-sm ml-2 bg-orange-100 px-2 py-1 rounded">STAFF</span></span>
+        </div>
+        <div class="flex items-center gap-4"><button onclick="logout()" class="bg-gray-100 text-gray-600 px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-gray-200 transition">Sign Out</button></div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto w-full px-8 py-12 flex-1">
+        <h1 class="font-serif text-4xl font-bold text-dark mb-8">Incoming Orders</h1>
+        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead class="bg-brand-light border-b border-gray-200">
+                    <tr>
+                        <th class="p-5 font-semibold text-gray-500 text-sm uppercase">Order ID</th>
+                        <th class="p-5 font-semibold text-gray-500 text-sm uppercase">Item</th>
+                        <th class="p-5 font-semibold text-gray-500 text-sm uppercase">Qty</th>
+                        <th class="p-5 font-semibold text-gray-500 text-sm uppercase">Total</th>
+                        <th class="p-5 font-semibold text-gray-500 text-sm uppercase">Status</th>
+                        <th class="p-5 font-semibold text-gray-500 text-sm uppercase">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="staff-table"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <script>
+        if(localStorage.getItem('role') !== 'staff') window.location.href = 'login.html';
+
+        function loadOrders() {
+            fetch('http://localhost:8000/api/orders/1')
+                .then(res => res.json())
+                .then(orders => {
+                    const tbody = document.getElementById('staff-table');
+                    tbody.innerHTML = '';
+                    if(orders.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="p-8 text-center text-gray-500">No orders yet.</td></tr>'; return; }
+                    
+                    orders.forEach(o => {
+                        let statusColor = "bg-yellow-100 text-yellow-700 border-yellow-200";
+                        let actionButton = "";
+
+                        if (o.status === "pending") {
+                            actionButton = `<button onclick="updateStatus(${o.id}, 'ready')" class="bg-brand text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-brand-dark transition shadow-sm">Mark Ready</button>`;
+                        } else if (o.status === "ready") {
+                            statusColor = "bg-blue-100 text-blue-700 border-blue-200";
+                            actionButton = `<button onclick="updateStatus(${o.id}, 'claimed')" class="bg-green-600 text-white px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-green-700 transition shadow-sm">Mark Claimed</button>`;
+                        } else {
+                            statusColor = "bg-gray-100 text-gray-600 border-gray-200";
+                            actionButton = `<span class="text-xs text-gray-400 font-medium"><i class="fa-solid fa-check-double mr-1"></i>Completed</span>`;
+                        }
+
+                        tbody.innerHTML += `
+                            <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                                <td class="p-5 text-sm text-gray-500 font-medium">#${o.id}</td>
+                                <td class="p-5 font-bold text-dark">${o.item_name}</td>
+                                <td class="p-5 text-sm text-gray-600">${o.quantity}</td>
+                                <td class="p-5 font-bold text-brand">₱${o.total_price.toFixed(2)}</td>
+                                <td class="p-5"><span class="${statusColor} px-3 py-1 rounded-full text-xs font-bold border uppercase">${o.status}</span></td>
+                                <td class="p-5">${actionButton}</td>
+                            </tr>
+                        `;
+                    });
+                });
+        }
+
+        async function updateStatus(orderId, newStatus) {
+            try {
+                const response = await fetch(`http://localhost:8000/api/orders/${orderId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status: newStatus })
+                });
+                if (response.ok) {
+                    loadOrders(); // Refresh the table
+                } else {
+                    alert("Failed to update status.");
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function logout() { localStorage.clear(); window.location.href = 'login.html'; }
+        
+        loadOrders();
+    </script>
+</body>
+</html>

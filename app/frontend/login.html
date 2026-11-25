@@ -3,32 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campus Canteen - Login</title>
-    <link rel="stylesheet" href="src/css/output.css">
+    <title>Sign In | Fookeyqou Canteen</title>
+    
+    <!-- Tailwind CDN & Config to match the dashboard -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { light: '#F9F6F0', DEFAULT: '#D97706', dark: '#B45309' },
+                        dark: '#1C1917'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Inter"', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>body { font-family: 'Inter', sans-serif; background-color: #F9F6F0; }</style>
 </head>
-<body class="bg-gray-100 h-screen flex items-center justify-center font-sans">
-    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
-        <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">Campus Canteen</h1>
+<body class="h-screen flex overflow-hidden">
+
+    <!-- Left Side: Brand Banner (Warm Gradient) -->
+    <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-brand-dark via-brand to-orange-400 relative items-center justify-center p-12">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         
-        <form id="login-form">
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
-                <input type="text" id="username" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required placeholder="student1">
+        <div class="relative z-10 text-center flex flex-col items-center">
+            <img src="img/logo.png" alt="Fookeyqou Logo" class="w-32 h-32 object-contain mb-6 drop-shadow-xl bg-white/10 backdrop-blur-md rounded-full p-4 border border-white/20">
+            <h1 class="font-serif text-4xl font-bold text-white mb-4 tracking-tight">Fookeyqou Canteen</h1>
+            <p class="text-orange-50 text-lg max-w-md mx-auto font-medium">Good Food. Good Mood. Skip the line and pre-order your meals today.</p>
+        </div>
+    </div>
+
+    <!-- Right Side: Login Form -->
+    <div class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-brand-light">
+        <!-- The Card Container -->
+        <div class="w-full max-w-md bg-white p-10 rounded-3xl shadow-xl border border-gray-100">
+            
+            <!-- Header & Demo Credentials -->
+            <div class="mb-8">
+                <h2 class="text-3xl font-serif font-bold text-dark tracking-tight">Welcome back</h2>
+                <p class="text-gray-500 mt-2 font-medium">Please sign in to your account.</p>
+                
+                <!-- Demo Credentials Box -->
+                <div class="mt-4 p-4 bg-orange-50 border border-orange-100 rounded-xl text-sm text-brand-dark flex flex-col gap-1">
+                    <p><i class="fa-solid fa-user-graduate mr-2"></i><strong>Student:</strong> student1 / pass</p>
+                    <p><i class="fa-solid fa-user-tie mr-2"></i><strong>Staff:</strong> staff1 / pass</p>
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                <input type="password" id="password" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" required placeholder="pass">
-            </div>
-            <div class="mb-6">
-                <label class="block text-gray-700 text-sm font-bold mb-2">Role</label>
-                <select id="role" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="student">Student</option>
-                    <option value="staff">Canteen Staff</option>
-                </select>
-            </div>
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg transition">Login</button>
-        </form>
-        <p id="error-msg" class="text-red-500 text-sm mt-4 text-center hidden">Invalid credentials</p>
+
+            <!-- The Form -->
+            <form id="login-form" class="space-y-5">
+                
+                <!-- Username Input -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fa-regular fa-user text-gray-400"></i>
+                        </div>
+                        <input type="text" id="username" 
+                               class="block w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition duration-200 bg-gray-50 focus:bg-white" 
+                               required placeholder="Enter username">
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-lock text-gray-400"></i>
+                        </div>
+                        <input type="password" id="password" 
+                               class="block w-full pl-11 pr-4 py-3 border border-gray-200 rounded-xl text-dark placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition duration-200 bg-gray-50 focus:bg-white" 
+                               required placeholder="Enter password">
+                    </div>
+                </div>
+
+                <!-- Role Select -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 mb-1.5">Role</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-id-badge text-gray-400"></i>
+                        </div>
+                        <select id="role" class="block w-full pl-11 pr-10 py-3 border border-gray-200 rounded-xl text-dark focus:outline-none focus:ring-2 focus:ring-brand focus:border-transparent transition duration-200 appearance-none bg-gray-50 focus:bg-white">
+                            <option value="student">Student</option>
+                            <option value="staff">Canteen Staff</option>
+                        </select>
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-sm"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full flex justify-center items-center gap-2 py-3.5 px-4 border border-transparent rounded-xl shadow-lg shadow-brand/30 text-sm font-bold text-white bg-brand hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand transition-all duration-200 mt-6">
+                    Sign In <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- Error Message -->
+            <p id="error-msg" class="text-red-500 text-sm mt-4 text-center hidden bg-red-50 py-3 rounded-xl border border-red-100 font-medium">
+                <i class="fa-solid fa-circle-exclamation mr-1"></i> Invalid credentials
+            </p>
+        </div>
     </div>
 
     <script src="src/js/auth.js"></script>
